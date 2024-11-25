@@ -43,16 +43,41 @@ describe("GET /api/topics", () => {
         });
       });
   });
+});
 
+describe("GET 404 Error", () => {
   test("404: responds with 404 error on wrong endpoint", () => {
     return request(app)
-      .get("/api/topic")
+      .get("/api/banana")
       .expect(404)
       .then(({ body }) => {
         const { msg } = body;
         expect(msg).toBe(
           "Endpoint not found. Please check the end point url again"
         );
+      });
+  });
+});
+
+describe("GET /api/articles", () => {
+  test("200: responds with a list of all articles", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+
+        articles.forEach((article) => {
+          expect(article).toMatchObject({
+            title: expect.any(String),
+            topic: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+          });
+        });
       });
   });
 });
