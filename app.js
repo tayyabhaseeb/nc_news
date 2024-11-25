@@ -11,7 +11,7 @@ app.use(express.json());
 app.get("/api", checkApi);
 app.get("/api/topics", getAllTopics);
 app.get("/api/articles", getAllArticles);
-
+// app.get("/api/articles/:article_id", getSpecificArticle);
 app.use("*", (req, res) => {
   res.status(404).send({
     msg: "Endpoint not found. Please check the end point url again",

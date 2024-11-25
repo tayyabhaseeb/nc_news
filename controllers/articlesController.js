@@ -10,4 +10,8 @@ const getAllArticles = (req, res, next) => {
     });
 };
 
+const getSpecificArticle = (req, res, next) => {
+  res.status(200).send({ msg: "Hi" });
+};
+
 module.exports = { getAllArticles };
