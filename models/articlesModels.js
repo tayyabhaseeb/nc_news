@@ -51,7 +51,7 @@ const fetchCommentsByArticle = (id) => {
     .query(`SELECT * FROM articles WHERE article_id = $1;`, [id])
     .then(({ rows }) => {
       if (rows.length === 0) {
-        return Promise.reject({ status: 404, message: "Not Found" });
+        return Promise.reject({ status: 404, msg: "not found" });
       }
 
       return db
@@ -70,8 +70,30 @@ const fetchCommentsByArticle = (id) => {
     });
 };
 
+const postCommentsByArticle = (id, username, body) => {
+  return db
+    .query(`SELECT * FROM articles WHERE article_id = $1;`, [id])
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
+      return db
+        .query(
+          `INSERT INTO comments (article_id , author, body)
+      VALUES($1, $2, $3)
+      RETURNING *
+      `,
+          [id, username, body]
+        )
+        .then(({ rows }) => {
+          return rows[0];
+        });
+    });
+};
+
 module.exports = {
   fetchAllArticles,
   fetchBySpecificId,
   fetchCommentsByArticle,
+  postCommentsByArticle,
 };

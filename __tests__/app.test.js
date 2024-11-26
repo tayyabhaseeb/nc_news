@@ -148,3 +148,29 @@ describe("GET /api/articles/:id/comments", () => {
       });
   });
 });
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: Responds with posted comment", () => {
+    const testComment = {
+      username: "icellusedkars",
+      body: "Hello World",
+    };
+
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(testComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          body: "Hello World",
+          article_id: 2,
+          author: "icellusedkars",
+          votes: 0,
+          created_at: expect.any(String),
+        });
+      });
+  });
+});
