@@ -84,7 +84,7 @@ describe("GET /api/articles", () => {
 });
 
 describe("GET /api/articles/:id", () => {
-  test("200: responds with an individual article", () => {
+  test("200: responds with an array of comments", () => {
     return request(app)
       .get("/api/articles/2")
       .expect(200)
@@ -93,13 +93,58 @@ describe("GET /api/articles/:id", () => {
         expect(article).toMatchObject({
           author: expect.any(String),
           title: expect.any(String),
-          article_id: expect.any(Number),
+          article_id: 2,
           body: expect.any(String),
           topic: expect.any(String),
           created_at: expect.any(String),
           votes: expect.any(Number),
           article_img_url: expect.any(String),
         });
+      });
+  });
+});
+
+describe("GET /api/articles/:id/comments", () => {
+  test("200: responds with an array of comments", () => {
+    return request(app)
+      .get("/api/articles/9/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments.length).toBe(2);
+        comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            article_id: 9,
+          });
+        });
+      });
+  });
+});
+
+describe("GET /api/articles/:id", () => {
+  test("404: responds with an empty object", () => {
+    return request(app)
+      .get("/api/articles/5000")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("not found");
+      });
+  });
+});
+
+describe("GET /api/articles/:id/comments", () => {
+  test("404: responds with an empty array", () => {
+    return request(app)
+      .get("/api/articles/5000/comments")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("not found");
       });
   });
 });
