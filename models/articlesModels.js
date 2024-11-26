@@ -48,20 +48,25 @@ const fetchBySpecificId = (id) => {
 
 const fetchCommentsByArticle = (id) => {
   return db
-    .query(
-      `
-  SELECT comment_id , votes, created_at, author, body, article_id
-  FROM comments WHERE article_id = $1
-  ORDER BY created_at DESC
-  `,
-      [id]
-    )
+    .query(`SELECT * FROM articles WHERE article_id = $1;`, [id])
     .then(({ rows }) => {
       if (rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "not found" });
-      } else {
-        return rows;
+        return Promise.reject({ status: 404, message: "Not Found" });
       }
+
+      return db
+        .query(
+          `
+          SELECT comment_id, votes, created_at, author, body, article_id
+          FROM comments 
+          WHERE article_id = $1
+          ORDER BY created_at DESC;
+          `,
+          [id]
+        )
+        .then(({ rows }) => {
+          return rows;
+        });
     });
 };
 

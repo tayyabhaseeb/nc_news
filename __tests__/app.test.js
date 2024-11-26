@@ -138,13 +138,13 @@ describe("GET /api/articles/:id", () => {
 });
 
 describe("GET /api/articles/:id/comments", () => {
-  test("404: responds with an empty array", () => {
+  test("200: responds with an empty array when no comments exist for the article", () => {
     return request(app)
-      .get("/api/articles/5000/comments")
-      .expect(404)
+      .get("/api/articles/2/comments")
+      .expect(200)
       .then(({ body }) => {
-        const { msg } = body;
-        expect(msg).toBe("not found");
+        const { comments } = body;
+        expect(comments).toEqual([]);
       });
   });
 });
