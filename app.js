@@ -8,6 +8,7 @@ const {
   getCommentBySpecId,
   postCommentBySpecId,
   updateArticleById,
+  deleteArticleId,
 } = require("./controllers/articlesController");
 
 const app = express();
@@ -21,6 +22,7 @@ app.get("/api/articles/:article_id", getSpecificArticle);
 app.get("/api/articles/:article_id/comments", getCommentBySpecId);
 app.post("/api/articles/:article_id/comments", postCommentBySpecId);
 app.patch("/api/articles/:article_id", updateArticleById);
+app.delete("/api/articles/:article_id", deleteArticleId);
 app.use("*", (req, res) => {
   res.status(404).send({
     msg: "Endpoint not found. Please check the end point url again",

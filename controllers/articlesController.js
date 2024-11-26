@@ -4,6 +4,7 @@ const {
   fetchCommentsByArticle,
   postCommentsByArticle,
   fetchPatchedArticle,
+  fetchDeletedArticle,
 } = require("../models/articlesModels");
 
 const getAllArticles = (req, res, next) => {
@@ -58,10 +59,18 @@ const updateArticleById = (req, res, next) => {
     res.status(200).send({ article });
   });
 };
+
+const deleteArticleId = (req, res, next) => {
+  const { article_id } = req.params;
+  fetchDeletedArticle(article_id).then(() => {
+    res.status(204).send();
+  });
+};
 module.exports = {
   getAllArticles,
   getSpecificArticle,
   getCommentBySpecId,
   postCommentBySpecId,
   updateArticleById,
+  deleteArticleId,
 };

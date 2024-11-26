@@ -104,10 +104,23 @@ const fetchPatchedArticle = (id, title) => {
     });
 };
 
+const fetchDeletedArticle = (id) => {
+  return db
+    .query(`DELETE FROM comments WHERE article_id = $1`, [id])
+    .then(() => {
+      return db.query(
+        `DELETE FROM articles WHERE article_id = $1 
+         RETURNING *`,
+        [id]
+      );
+    });
+};
+
 module.exports = {
   fetchAllArticles,
   fetchBySpecificId,
   fetchCommentsByArticle,
   postCommentsByArticle,
   fetchPatchedArticle,
+  fetchDeletedArticle,
 };
