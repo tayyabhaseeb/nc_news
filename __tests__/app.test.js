@@ -174,3 +174,21 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Responds with updated article", () => {
+    const testArticle = {
+      title: "Living on the edge",
+    };
+
+    return request(app)
+      .patch("/api/articles/1")
+      .send(testArticle)
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+
+        expect(article.title).toBe("Living on the edge");
+      });
+  });
+});
