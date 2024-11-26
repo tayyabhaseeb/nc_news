@@ -3,6 +3,7 @@ const {
   fetchBySpecificId,
   fetchCommentsByArticle,
   postCommentsByArticle,
+  fetchPatchedArticle,
 } = require("../models/articlesModels");
 
 const getAllArticles = (req, res, next) => {
@@ -50,9 +51,17 @@ const postCommentBySpecId = (req, res, next) => {
     });
 };
 
+const updateArticleById = (req, res, next) => {
+  const { title } = req.body;
+  const { article_id } = req.params;
+  fetchPatchedArticle(article_id, title).then((article) => {
+    res.status(200).send({ article });
+  });
+};
 module.exports = {
   getAllArticles,
   getSpecificArticle,
   getCommentBySpecId,
   postCommentBySpecId,
+  updateArticleById,
 };

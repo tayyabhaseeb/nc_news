@@ -91,9 +91,23 @@ const postCommentsByArticle = (id, username, body) => {
     });
 };
 
+const fetchPatchedArticle = (id, title) => {
+  return db
+    .query(
+      `UPDATE articles SET title = $1 WHERE article_id = $2
+      RETURNING *
+  `,
+      [title, id]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};
+
 module.exports = {
   fetchAllArticles,
   fetchBySpecificId,
   fetchCommentsByArticle,
   postCommentsByArticle,
+  fetchPatchedArticle,
 };
