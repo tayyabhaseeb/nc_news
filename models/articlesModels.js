@@ -91,13 +91,13 @@ const postCommentsByArticle = (id, username, body) => {
     });
 };
 
-const fetchPatchedArticle = (id, title) => {
+const fetchPatchedArticle = (id, inc_votes) => {
   return db
     .query(
-      `UPDATE articles SET title = $1 WHERE article_id = $2
+      `UPDATE articles SET votes = votes + $1 WHERE article_id = $2
       RETURNING *
   `,
-      [title, id]
+      [inc_votes, id]
     )
     .then(({ rows }) => {
       return rows[0];
