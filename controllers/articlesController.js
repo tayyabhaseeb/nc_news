@@ -53,9 +53,9 @@ const postCommentBySpecId = (req, res, next) => {
 };
 
 const updateArticleById = (req, res, next) => {
-  const { title } = req.body;
+  const { inc_votes } = req.body;
   const { article_id } = req.params;
-  fetchPatchedArticle(article_id, title).then((article) => {
+  fetchPatchedArticle(article_id, inc_votes).then((article) => {
     res.status(200).send({ article });
   });
 };
