@@ -8,7 +8,9 @@ const {
 } = require("../models/articlesModels");
 
 const getAllArticles = (req, res, next) => {
-  fetchAllArticles()
+  const { sort_by, order } = req.query;
+  // console.log(sort_by, order, "<==== query");
+  fetchAllArticles(sort_by, order)
     .then((articles) => {
       res.status(200).send({ articles });
     })

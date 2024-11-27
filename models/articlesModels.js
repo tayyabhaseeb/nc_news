@@ -1,9 +1,25 @@
 const db = require("../db/connection");
 
-const fetchAllArticles = () => {
-  return db
-    .query(
-      `SELECT 
+const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
+  const validSortValues = [
+    "title",
+    "topic",
+    "author",
+    "created_at",
+    "votes",
+    "article_img_url",
+  ];
+  const validOrderValues = ["desc", "asc"];
+
+  if (!validSortValues.includes(sort_by)) {
+    return Promise.reject({ status: 404, msg: "Invalid Sorted Values" });
+  }
+
+  if (!validOrderValues.includes(order)) {
+    return Promise.reject({ status: 404, msg: "Invalid Order" });
+  }
+
+  let dbQuery = `SELECT 
          articles.article_id, 
          articles.title, 
          articles.topic, 
@@ -23,12 +39,20 @@ const fetchAllArticles = () => {
          articles.created_at, 
          articles.votes, 
          articles.article_img_url
-       ORDER BY articles.created_at DESC;
-      `
-    )
-    .then(({ rows }) => {
-      return rows;
-    });
+      
+      `;
+
+  if (sort_by) {
+    dbQuery += ` ORDER BY articles.${sort_by} `;
+  }
+
+  if (order) {
+    dbQuery += `${order}`;
+  }
+
+  return db.query(dbQuery).then(({ rows }) => {
+    return rows;
+  });
 };
 
 const fetchBySpecificId = (id) => {

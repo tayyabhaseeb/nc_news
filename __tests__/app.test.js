@@ -83,6 +83,19 @@ describe("GET /api/articles", () => {
   });
 });
 
+describe("GET /api/articles?sort_by=votes&order=desc", () => {
+  test("200: responds with a list of all articles sorted", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=desc")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBe(13);
+        expect(articles[0].votes).toBe(100);
+      });
+  });
+});
+
 describe("GET /api/articles/:id", () => {
   test("200: responds with an array of comments", () => {
     return request(app)
