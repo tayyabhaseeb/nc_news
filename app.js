@@ -1,35 +1,23 @@
 const express = require("express");
-const checkApi = require("./controllers/checkController");
-const { getAllTopics } = require("./controllers/topicsControllers");
 const { customErrorHandler } = require("./errors");
-const {
-  getAllArticles,
-  getSpecificArticle,
-  getCommentBySpecId,
-  postCommentBySpecId,
-  updateArticleById,
-  deleteArticleId,
-} = require("./controllers/articlesController");
-const { deleteCommentById } = require("./controllers/commentsController");
-const { getAllUsers } = require("./controllers/usersControllers");
+const apiRouter = require("./routers/apiRouter");
+const topicsRouter = require("./routers/topicsRouter");
+const articlesRouter = require("./routers/articlesRouter");
+const commentsRouter = require("./routers/commentsRouter");
+const usersRouter = require("./routers/usersRouter");
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/api", checkApi);
-app.get("/api/topics", getAllTopics);
+app.use("/api", apiRouter);
+app.use("/api/topics", topicsRouter);
 
-app.get("/api/articles", getAllArticles);
-app.get("/api/articles/:article_id", getSpecificArticle);
-app.get("/api/articles/:article_id/comments", getCommentBySpecId);
-app.post("/api/articles/:article_id/comments", postCommentBySpecId);
-app.patch("/api/articles/:article_id", updateArticleById);
-app.delete("/api/articles/:article_id", deleteArticleId);
+app.use("/api/articles", articlesRouter);
 
-app.delete("/api/comments/:comment_id", deleteCommentById);
+app.use("/api/comments", commentsRouter);
 
-app.get("/api/users", getAllUsers);
+app.use("/api/users", usersRouter);
 
 app.use("*", (req, res) => {
   res.status(404).send({
