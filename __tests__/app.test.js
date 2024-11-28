@@ -96,6 +96,19 @@ describe("GET /api/articles?sort_by=votes&order=desc", () => {
   });
 });
 
+describe("GET /api/articles?sort_by=votes&order=desc&topic=cats", () => {
+  test("200: responds with a list of all articles sorted", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=desc&topic=cats")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBe(1);
+        expect(articles[0].topic).toBe("cats");
+      });
+  });
+});
+
 describe("GET /api/articles/:id", () => {
   test("200: responds with an array of comments", () => {
     return request(app)
@@ -112,6 +125,7 @@ describe("GET /api/articles/:id", () => {
           created_at: expect.any(String),
           votes: expect.any(Number),
           article_img_url: expect.any(String),
+          comment_count: expect.any(String),
         });
       });
   });

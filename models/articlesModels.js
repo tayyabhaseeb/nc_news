@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
+const fetchAllArticles = (sort_by = "created_at", order = "desc", topic) => {
   const validSortValues = [
     "title",
     "topic",
@@ -10,6 +10,9 @@ const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
     "article_img_url",
   ];
   const validOrderValues = ["desc", "asc"];
+  const validTopics = ["coding", "football", "cooking", "cats"];
+
+  const queryValues = [];
 
   if (!validSortValues.includes(sort_by)) {
     return Promise.reject({ status: 404, msg: "Invalid Sorted Values" });
@@ -17,6 +20,9 @@ const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
 
   if (!validOrderValues.includes(order)) {
     return Promise.reject({ status: 404, msg: "Invalid Order" });
+  }
+  if (topic && !validTopics.includes(topic)) {
+    return Promise.reject({ status: 404, msg: "Invalid topic" });
   }
 
   let dbQuery = `SELECT 
@@ -31,7 +37,15 @@ const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
        FROM articles
        LEFT JOIN comments 
        ON articles.article_id = comments.article_id
-       GROUP BY 
+      `;
+
+  if (topic) {
+    dbQuery += ` WHERE topic = $1`;
+    queryValues.push(topic);
+  }
+
+  dbQuery += `
+     GROUP BY 
          articles.article_id, 
          articles.title, 
          articles.topic, 
@@ -39,8 +53,7 @@ const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
          articles.created_at, 
          articles.votes, 
          articles.article_img_url
-      
-      `;
+  `;
 
   if (sort_by) {
     dbQuery += ` ORDER BY articles.${sort_by} `;
@@ -50,24 +63,44 @@ const fetchAllArticles = (sort_by = "created_at", order = "desc") => {
     dbQuery += `${order}`;
   }
 
-  return db.query(dbQuery).then(({ rows }) => {
+  return db.query(dbQuery, queryValues).then(({ rows }) => {
     return rows;
   });
 };
 
 const fetchBySpecificId = (id) => {
-  return db
-    .query(
-      `SELECT author , title, article_id, body, topic, created_at, votes, article_img_url FROM articles WHERE article_id = $1`,
-      [id]
-    )
-    .then(({ rows }) => {
-      if (rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "not found" });
-      } else {
-        return rows[0];
-      }
-    });
+  let dbQuery = `SELECT 
+       articles.author,
+       articles.title, 
+       articles.article_id, 
+       articles.body,     
+       articles.topic, 
+       articles.created_at, 
+       articles.votes, 
+       articles.article_img_url,
+       COUNT(comments.comment_id)AS comment_count
+       FROM articles
+       LEFT JOIN comments 
+       ON articles.article_id = comments.article_id
+       WHERE articles.article_id = $1
+       GROUP BY 
+       articles.author,
+       articles.title, 
+       articles.article_id, 
+       articles.body,
+       articles.topic, 
+       articles.created_at, 
+       articles.votes, 
+       articles.article_img_url
+      `;
+
+  return db.query(dbQuery, [id]).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "not found" });
+    } else {
+      return rows[0];
+    }
+  });
 };
 
 const fetchCommentsByArticle = (id) => {
