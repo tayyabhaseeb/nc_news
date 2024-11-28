@@ -263,3 +263,16 @@ describe("GET /api/users", () => {
       });
   });
 });
+
+describe("GET /api/users/:username", () => {
+  test("200: responds with a specific user", () => {
+    return request(app)
+      .get("/api/users/lurker")
+      .expect(200)
+      .then(({ body }) => {
+        const { user } = body;
+
+        expect(user.username).toBe("lurker");
+      });
+  });
+});

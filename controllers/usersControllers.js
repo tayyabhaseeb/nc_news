@@ -1,4 +1,4 @@
-const { fetchUsers } = require("../models/usersModels");
+const { fetchUsers, fetchSpecificUser } = require("../models/usersModels");
 
 const getAllUsers = (req, res) => {
   fetchUsers().then((users) => {
@@ -6,4 +6,11 @@ const getAllUsers = (req, res) => {
   });
 };
 
-module.exports = { getAllUsers };
+const getSpecificUser = (req, res) => {
+  const { username } = req.params;
+  fetchSpecificUser(username).then((user) => {
+    res.status(200).send({ user });
+  });
+};
+
+module.exports = { getAllUsers, getSpecificUser };
