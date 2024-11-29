@@ -379,3 +379,25 @@ describe("GET /api/articles/:articleId/comments?limit&page=1", () => {
       });
   });
 });
+
+describe("POST /api/topics", () => {
+  test("201: Responds with posted topic", () => {
+    const testComment = {
+      slug: "New Slug",
+      description: "Hello World",
+    };
+
+    return request(app)
+      .post("/api/topics")
+      .send(testComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { topic } = body;
+
+        expect(topic).toMatchObject({
+          slug: "New Slug",
+          description: "Hello World",
+        });
+      });
+  });
+});
