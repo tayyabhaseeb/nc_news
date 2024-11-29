@@ -293,3 +293,30 @@ describe("UPDATE /api/comments/:comment_id", () => {
       });
   });
 });
+
+// test("201: Responds with the posted article", () => {
+//   const testArticle = {
+//     author: "lurker",
+//     title: "How to test for Dummies",
+//     body: "It's a bad sign if you're only just learning this now",
+//     topic: "paper",
+//     article_img_url: "https://tinyurl.com/testing-for-dummies",
+//   };
+//   return request(app)
+//     .post("/api/articles")
+//     .send(testArticle)
+//     .expect(201)
+//     .then(({ body: { article } }) => {
+//       expect(article).toMatchObject({
+//         article_id: 14,
+//         title: "How to test for Dummies",
+//         topic: "paper",
+//         author: "lurker",
+//         body: "It's a bad sign if you're only just learning this now",
+//         created_at: expect.any(String),
+//         votes: 0,
+//         article_img_url: "https://tinyurl.com/testing-for-dummies",
+//         comment_count: 0,
+//       });
+//     });
+// });

@@ -5,11 +5,12 @@ const {
   postCommentsByArticle,
   fetchPatchedArticle,
   fetchDeletedArticle,
+  updatedArticles,
 } = require("../models/articlesModels");
 
 const getAllArticles = (req, res, next) => {
   const { sort_by, order, topic } = req.query;
-  // console.log(sort_by, order, "<==== query");
+
   fetchAllArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
@@ -68,6 +69,14 @@ const deleteArticleId = (req, res, next) => {
     res.status(204).send();
   });
 };
+
+const addNewArticles = (req, res) => {
+  const articleBody = req.body;
+
+  updatedArticles(articleBody).then((article) => {
+    res.status(201).send(article);
+  });
+};
 module.exports = {
   getAllArticles,
   getSpecificArticle,
@@ -75,4 +84,5 @@ module.exports = {
   postCommentBySpecId,
   updateArticleById,
   deleteArticleId,
+  addNewArticles,
 };

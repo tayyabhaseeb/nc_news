@@ -173,6 +173,22 @@ const fetchDeletedArticle = (id) => {
     });
 };
 
+const updatedArticles = (articleBody) => {
+  const { author, title, body, topic } = articleBody;
+
+  return db
+    .query(
+      `INSERT INTO articles (author, title, body, topic)
+      VALUES($1, $2, $3, $4)
+      RETURNING *;`,
+      [author, title, body, topic]
+    )
+    .then(({ rows }) => {
+      // Assuming comment_count is not part of the database table and is manually added
+      return { ...rows[0], comment_count: 0 };
+    });
+};
+
 module.exports = {
   fetchAllArticles,
   fetchBySpecificId,
@@ -180,4 +196,5 @@ module.exports = {
   postCommentsByArticle,
   fetchPatchedArticle,
   fetchDeletedArticle,
+  updatedArticles,
 };
