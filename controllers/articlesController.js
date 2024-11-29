@@ -8,8 +8,22 @@ const {
 } = require("../models/articlesModels");
 
 const getAllArticles = (req, res, next) => {
-  const { sort_by, order, topic } = req.query;
-  // console.log(sort_by, order, "<==== query");
+  const { sort_by, order, topic, limit = 10, page } = req.query;
+
+  if (limit && page) {
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    fetchAllArticles(sort_by, order, topic)
+      .then((articles) => {
+        articles = articles.slice(startIndex, endIndex);
+        res.status(200).send({ total_count: articles.length, articles });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+
   fetchAllArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
