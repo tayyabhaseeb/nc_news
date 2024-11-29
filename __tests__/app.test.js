@@ -109,6 +109,56 @@ describe("GET /api/articles?sort_by=votes&order=desc&topic=cats", () => {
   });
 });
 
+describe("GET /api/articles", () => {
+  test("200: responds with a list of all articles (paginated)", () => {
+    return request(app)
+      .get("/api/articles?limit=10&page=1")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles, total_count } = body;
+        expect(total_count).toBe(10);
+        expect(articles.length).toBe(10);
+        articles.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
+describe("GET /api/articles?sort_by=votes&order=desc", () => {
+  test("200: responds with a list of all articles sorted and paginated", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=desc&limit=10&page=1") // Include pagination parameters
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBe(10);
+        expect(articles[0].votes).toBe(100);
+      });
+  });
+});
+
+describe("GET /api/articles?sort_by=votes&order=desc&topic=cats", () => {
+  test("200: responds with a list of articles filtered by topic and paginated", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=desc&topic=cats&limit=10&page=1")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBe(1);
+      });
+  });
+});
+
 describe("GET /api/articles/:id", () => {
   test("200: responds with an array of comments", () => {
     return request(app)
@@ -290,6 +340,30 @@ describe("UPDATE /api/comments/:comment_id", () => {
       .then(({ body }) => {
         const { comment } = body;
         expect(comment.votes).toEqual(17);
+      });
+  });
+});
+
+describe("GET /api/articles?limit=1&page=1", () => {
+  test("200: responds with paginated articles", () => {
+    return request(app)
+      .get("/api/articles?limit=5&page=1")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBe(5);
+      });
+  });
+});
+
+describe("GET /api/articles?limit&page=1", () => {
+  test("200: responds with default limit value in paginated articles", () => {
+    return request(app)
+      .get("/api/articles?page=1")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBe(10);
       });
   });
 });
