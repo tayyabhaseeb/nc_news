@@ -347,11 +347,11 @@ describe("UPDATE /api/comments/:comment_id", () => {
 describe("GET /api/articles?limit=1&page=1", () => {
   test("200: responds with paginated articles", () => {
     return request(app)
-      .get("/api/articles?limit=1&page=1")
+      .get("/api/articles?limit=5&page=1")
       .expect(200)
       .then(({ body }) => {
         const { articles } = body;
-        expect(articles.length).toBe(1);
+        expect(articles.length).toBe(5);
       });
   });
 });
