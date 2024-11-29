@@ -276,3 +276,20 @@ describe("GET /api/users/:username", () => {
       });
   });
 });
+
+describe("UPDATE /api/comments/:comment_id", () => {
+  test("200: Updates the specified comment and increment the votes property of it", () => {
+    const testArticle = {
+      inc_votes: 1,
+    };
+
+    return request(app)
+      .patch("/api/comments/1")
+      .send(testArticle)
+      .expect(200)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment.votes).toEqual(17);
+      });
+  });
+});
