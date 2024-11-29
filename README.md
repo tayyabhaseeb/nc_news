@@ -7,7 +7,7 @@ The project was built using **Node.js**, **Express**, and **PostgreSQL**.
 ---
 
 ## Hosted Version
-You can find the hosted version of the API at: [https://your-api-hosted-link.com](https://your-api-hosted-link.com)
+You can find the hosted version of the API at: [https://nc-news-1-vwa9.onrender.com/api](https://nc-news-1-vwa9.onrender.com/api)
 
 ---
 
