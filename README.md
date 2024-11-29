@@ -110,7 +110,3 @@ If you'd like to contribute:
 2. Create a new branch for your feature/fix.
 3. Submit a pull request with a clear description of changes.
 
----
-
-## License
-This project is licensed under the ISC License. See the `LICENSE` file for details.
