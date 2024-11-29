@@ -367,3 +367,15 @@ describe("GET /api/articles?limit&page=1", () => {
       });
   });
 });
+
+describe("GET /api/articles/:articleId/comments?limit&page=1", () => {
+  test("200: responds with default limit value in paginated articles", () => {
+    return request(app)
+      .get("/api/articles/1/comments?limit=1&page=1")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments.length).toBe(1);
+      });
+  });
+});

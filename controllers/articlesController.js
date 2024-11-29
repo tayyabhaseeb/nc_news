@@ -25,14 +25,6 @@ const getAllArticles = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-
-  // fetchAllArticles(sort_by, order, topic)
-  //   .then((articles) => {
-  //     return res.status(200).send({ articles });
-  //   })
-  // .catch((err) => {
-  //   next(err);
-  // });
 };
 
 const getSpecificArticle = (req, res, next) => {
@@ -48,9 +40,18 @@ const getSpecificArticle = (req, res, next) => {
 
 const getCommentBySpecId = (req, res, next) => {
   const { article_id } = req.params;
+  const { limit = 10, page } = req.query;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
   fetchCommentsByArticle(article_id)
     .then((comments) => {
-      res.status(200).send({ comments });
+      const paginatedComments = comments.slice(startIndex, endIndex);
+      return res.status(200).send({
+        total_count: limit && page ? paginatedComments.length : comments.length,
+        comments: limit && page ? paginatedComments : comments,
+      });
     })
     .catch((err) => {
       next(err);
