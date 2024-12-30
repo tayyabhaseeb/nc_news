@@ -1,4 +1,5 @@
 const express = require("express");
+const app = express();
 const cors = require("cors");
 
 const { customErrorHandler } = require("./errors");
@@ -8,17 +9,7 @@ const articlesRouter = require("./routers/articlesRouter");
 const commentsRouter = require("./routers/commentsRouter");
 const usersRouter = require("./routers/usersRouter");
 
-const app = express();
-
-const corsOptions = {
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PATCH", "DELETE", "PUT", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
-
-app.options("*", cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
