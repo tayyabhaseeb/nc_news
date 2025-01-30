@@ -174,18 +174,18 @@ const fetchDeletedArticle = (id) => {
 };
 
 const updatedArticles = (articleBody) => {
-  const { author, title, body, topic } = articleBody;
+  const { author, title, body, topic, article_img_url, votes, created_at } =
+    articleBody;
 
   return db
     .query(
-      `INSERT INTO articles (author, title, body, topic)
-      VALUES($1, $2, $3, $4)
+      `INSERT INTO articles (author, title, body, topic,  article_img_url, votes, created_at)
+      VALUES($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;`,
-      [author, title, body, topic]
+      [author, title, body, topic, article_img_url, votes, created_at]
     )
     .then(({ rows }) => {
-      // Assuming comment_count is not part of the database table and is manually added
-      return { ...rows[0], comment_count: 0 };
+      return rows[0];
     });
 };
 

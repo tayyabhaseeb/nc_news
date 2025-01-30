@@ -87,7 +87,14 @@ const deleteArticleId = (req, res, next) => {
 };
 
 const addNewArticles = (req, res) => {
-  const articleBody = req.body;
+  const articleBody = {
+    ...req.body,
+    article_img_url:
+      req.body.article_img_url ||
+      "https://static.vecteezy.com/system/resources/previews/007/101/320/non_2x/article-writing-design-on-white-background-free-vector.jpg",
+    votes: 0,
+    created_at: new Date().toISOString(),
+  };
 
   updatedArticles(articleBody).then((article) => {
     res.status(201).send(article);
