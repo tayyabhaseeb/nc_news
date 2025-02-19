@@ -4,19 +4,19 @@ This project is a **backend API** for a news website. It provides endpoints to i
 
 The project was built using **Node.js**, **Express**, and **PostgreSQL**.
 
----
+
 
 ## Hosted Version
 
-=======
+
 
 You can find the hosted version of the API at: [https://nc-news-1-vwa9.onrender.com/api](https://nc-news-1-vwa9.onrender.com/api)
 
----
+
 
 ## Features
 
-=======
+
 
 - Retrieve articles, topics, comments, and users.
 - Filter articles by topic.
@@ -24,14 +24,14 @@ You can find the hosted version of the API at: [https://nc-news-1-vwa9.onrender.
 - Post new comments and delete comments by ID.
 - Full test suite using **Jest**.
 
----
+
 
 ## Requirements
 
 - **Node.js**: `>=16.0.0`
 - **PostgreSQL**: `>=12.0`
 
----
+
 
 ## Installation and Setup
 
@@ -39,12 +39,12 @@ Follow these steps to set up the project locally:
 
 ### 1. Clone the repository
 
-=======
+
 
 - **Node.js**: `>=16.0.0`
 - **PostgreSQL**: `>=12.0`
 
----
+
 
 ## Installation and Setup
 
@@ -59,7 +59,7 @@ cd be-nc-news
 
 ### 2. Install dependencies
 
-=======
+
 
 ```bash
 npm install
@@ -71,7 +71,7 @@ You need to create two `.env` files to store your database connection details:
 
 #### `.env.development`
 
-=======
+
 You need to create two `.env` files to store your database connection details:
 
 #### `.env.development`
@@ -82,7 +82,7 @@ PGDATABASE=nc_news
 
 #### `.env.test`
 
-=======
+
 
 ```
 PGDATABASE=nc_news_test
@@ -117,7 +117,7 @@ npm test
 - `npm start`: Starts the server in production mode.
 - `npm run seed-prod`: Seeds the production database.
 
-=======
+
 
 ### 4. Set up the database
 
@@ -136,7 +136,7 @@ Run the test suite to ensure everything is working:
 npm test
 ```
 
----
+
 
 ## Scripts
 
@@ -146,7 +146,7 @@ npm test
 - `npm start`: Starts the server in production mode.
 - `npm run seed-prod`: Seeds the production database.
 
----
+
 
 ## API Endpoints
 
@@ -156,7 +156,7 @@ All endpoints are relative to the base URL: `/api`.
 
 ### Example Endpoints
 
-=======
+
 All endpoints are relative to the base URL: `/api`.
 
 ### Example Endpoints
@@ -168,7 +168,7 @@ All endpoints are relative to the base URL: `/api`.
 
 For full documentation, visit the hosted `/api` endpoint.
 
----
+
 
 ## Troubleshooting
 
@@ -176,7 +176,7 @@ For full documentation, visit the hosted `/api` endpoint.
 - If tests fail, check the `.env.test` file and database connection.
 - Use `console.log` or debugging tools for troubleshooting issues.
 
----
+
 
 ## Contributing
 
@@ -186,14 +186,5 @@ If you'd like to contribute:
 2. Create a new branch for your feature/fix.
 3. Submit a pull request with a clear description of changes.
 
----
 
-## License
 
-# This project is licensed under the ISC License. See the `LICENSE` file for details.
-
-If you'd like to contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature/fix.
-3. Submit a pull request with a clear description of changes.
